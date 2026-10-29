@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusLoop | Design Thinking Campus Re-Exchange</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Navigation -->
+  <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showView('home')">
+        <div class="bg-amber-400 text-indigo-950 p-2 rounded-xl font-extrabold text-xl">
+          <i class="fa-solid fa-repeat"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">CampusLoop</h1>
+          <p class="text-xs text-indigo-200">Design Thinking Item Exchange</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button onclick="showView('sell')" class="bg-indigo-800 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+          <i class="fa-solid fa-plus-circle mr-1"></i> Sell (Senior)
+        </button>
+        <button onclick="showView('buy')" class="bg-amber-400 hover:bg-amber-300 text-indigo-950 text-sm font-semibold px-4 py-2 rounded-lg transition">
+          <i class="fa-solid fa-bag-shopping mr-1"></i> Buy (Junior)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Bar for Simulated Real-time Handshake -->
+  <div id="sellerNotificationBanner" class="hidden bg-emerald-600 text-white px-4 py-2 text-sm text-center font-medium shadow-inner flex items-center justify-center space-x-2">
+    <i class="fa-solid fa-bell animate-bounce"></i>
+    <span id="sellerNotificationText">Notification: Item booked by Junior.</span>
+    <button onclick="this.parentElement.classList.add('hidden')" class="ml-3 text-xs underline font-bold">Dismiss</button>
+  </div>
+
+  <main class="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
+
+    <!-- HOME VIEW (Two main paths) -->
+    <section id="view-home" class="space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide">
+          DT Problem: Senior move-outs & Junior affordability
+        </span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
+          Hand over campus essentials without losing goods or money.
+        </h2>
+        <p class="text-slate-600 text-sm md:text-base">
+          Connecting passing-out seniors with incoming juniors. Verified campus handshakes, fair student pricing, and zero lost items.
+        </p>
+      </div>
+
+      <!-- Core 2 Options Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+        <!-- SELL CARD -->
+        <div onclick="showView('sell')" class="group cursor-pointer bg-white border-2 border-indigo-100 hover:border-indigo-500 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-indigo-600 group-hover:text-white transition">
+              <i class="fa-solid fa-boxes-packing"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">For Seniors</span>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1">Sell an Item</h3>
+              <p class="text-slate-500 text-sm mt-2">
+                Moving out or upgrading? List your drafters, textbooks, calculators, or lab coats with usage history and room details.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-indigo-600 font-bold text-sm">
+            <span>Add New Item to Sell</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          </div>
+        </div>
+
+        <!-- BUY CARD -->
+        <div onclick="showView('buy')" class="group cursor-pointer bg-white border-2 border-amber-100 hover:border-amber-500 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-amber-500 group-hover:text-white transition">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">For Juniors</span>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1">Buy Products</h3>
+              <p class="text-slate-500 text-sm mt-2">
+                Save 60-80% on lab gear and books. Get verified items directly from seniors in your campus hostels.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-amber-600 font-bold text-sm">
+            <span>Browse Available Items</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELL VIEW (Senior Form) -->
+    <section id="view-sell" class="hidden max-w-2xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">List an Item for Juniors</h2>
+          <p class="text-xs text-slate-500">Provide usage duration and low price to prevent lost belongings.</p>
+        </div>
+        <button onclick="showView('home')" class="text-sm text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="sellForm" onsubmit="handleSellSubmit(event)" class="space-y-5">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Product Title</label>
+          <input type="text" id="itemName" required placeholder="e.g., Engineering Drafter + Holder" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Category</label>
+            <select id="itemCategory" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white">
+              <option value="Tools">Lab & Drawing Tools</option>
+              <option value="Books">Academics & Books</option>
+              <option value="Electronics">Electronics & Calculators</option>
+              <option value="Hostel">Hostel & Living Gear</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Usage Duration</label>
+            <select id="itemUsage" required class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white">
+              <option value="1 Semester (4 months)">1 Semester (4 months)</option>
+              <option value="1 Year (2 Semesters)">1 Year (2 Semesters)</option>
+              <option value="2 Years">2 Years</option>
+              <option value="3+ Years">3+ Years</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Original Price (₹)</label>
+            <input type="number" id="originalPrice" required placeholder="e.g., 900" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Selling Price (₹)</label>
+            <input type="number" id="sellingPrice" required placeholder="e.g., 250" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Senior Name & Branch</label>
+            <input type="text" id="sellerName" required placeholder="e.g., Srikar (ECE 4th Yr)" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Pickup Location (Hostel & Room)</label>
+            <input type="text" id="sellerRoom" required placeholder="e.g., BH-2, Room 305" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-md transition">
+            Publish Item to Campus Market
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- BUY VIEW (Junior Product Catalog) -->
+    <section id="view-buy" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Available Campus Items</h2>
+          <p class="text-sm text-slate-500">Pick from verified senior listings at low costs. No items lost in transit.</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="renderProducts()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">
+            <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+          </button>
+          <button onclick="resetDefaults()" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-lg font-semibold">
+            Reset Demo Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Product Cards Grid -->
+      <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- PAYMENT & HANDSHAKE MODAL -->
+  <div id="paymentModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative overflow-hidden">
+      
+      <!-- Checkout Stage -->
+      <div id="checkoutStep">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="text-lg font-bold text-slate-900">Complete Purchase</h3>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="my-4 bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
+          <div class="text-xs text-slate-400 font-bold uppercase">Item Selected</div>
+          <div id="modalItemTitle" class="font-bold text-slate-900 text-base">Mini Drafter</div>
+          <div class="flex justify-between items-center text-sm pt-2">
+            <span class="text-slate-500">Amount to Pay:</span>
+            <span id="modalItemPrice" class="font-black text-indigo-700 text-lg">₹250</span>
+          </div>
+        </div>
+
+        <form onsubmit="processPayment(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Junior Name & ID</label>
+            <input type="text" id="buyerInfo" required placeholder="e.g., K. Rahul (ECE 1st Yr)" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Payment Method</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center space-x-2 border p-2.5 rounded-lg cursor-pointer hover:border-indigo-500">
+                <input type="radio" name="payMethod" value="UPI" checked class="text-indigo-600">
+                <span class="font-bold">UPI / QR Code</span>
+              </label>
+              <label class="flex items-center space-x-2 border p-2.5 rounded-lg cursor-pointer hover:border-indigo-500">
+                <input type="radio" name="payMethod" value="Cash" class="text-indigo-600">
+                <span class="font-bold">Cash on Handover</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" id="payButton" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-sm transition">
+            Confirm & Pay
+          </button>
+        </form>
+      </div>
+
+      <!-- Processing Stage Spinner -->
+      <div id="processingStep" class="hidden text-center py-10 space-y-3">
+        <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="font-bold text-slate-700 text-sm">Locking Item & Verifying Handover...</p>
+        <p class="text-xs text-slate-400">Generating Secure Custody Code</p>
+      </div>
+
+      <!-- Success & Handshake Receipt Stage -->
+      <div id="receiptStep" class="hidden space-y-4">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl mx-auto mb-2">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">Payment Completed!</h3>
+          <p class="text-xs text-slate-500">Item is officially locked for you and marked as sold.</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center space-y-1">
+          <div class="text-xs uppercase font-extrabold text-amber-800">Your Handshake Security OTP</div>
+          <div id="receiptOtp" class="text-3xl font-black tracking-widest text-indigo-900">8492</div>
+          <p class="text-[11px] text-amber-700">Show this 4-digit code to the senior when collecting the item to verify custody.</p>
+        </div>
+
+        <div class="text-xs text-slate-600 space-y-1.5 border-t border-slate-100 pt-3">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Seller Location:</span>
+            <span id="receiptLocation" class="font-semibold text-slate-800">BH-2, Room 305</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Seller Name:</span>
+            <span id="receiptSeller" class="font-semibold text-slate-800">Srikar</span>
+          </div>
+        </div>
+
+        <button onclick="closeModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
+          Done & Return to Catalog
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Initial Mock Inventory
+    const defaultProducts = [
+      {
+        id: 1,
+        title: "Omega Mini Drafter with Canvas Bag",
+        category: "Tools",
+        usage: "1 Year (2 Semesters)",
+        originalPrice: 850,
+        sellingPrice: 250,
+        seller: "Vamsi (Mech 3rd Yr)",
+        location: "Boys Hostel 3, Room 112",
+        sold: false
+      },
+      {
+        id: 2,
+        title: "Casio fx-991EX ClassWiz Calculator",
+        category: "Electronics",
+        usage: "1.5 Years",
+        originalPrice: 1400,
+        sellingPrice: 500,
+        seller: "Kavitha (ECE 4th Yr)",
+        location: "Girls Hostel 1, Room 204",
+        sold: false
+      },
+      {
+        id: 3,
+        title: "White Chemistry Lab Coat (Medium)",
+        category: "Hostel",
+        usage: "1 Semester (4 months)",
+        originalPrice: 450,
+        sellingPrice: 120,
+        seller: "Pranay (Chemical 2nd Yr)",
+        location: "Boys Hostel 1, Room 408",
+        sold: false
+      }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('campusProducts')) || defaultProducts;
+    let selectedProductId = null;
+
+    function saveProducts() {
+      localStorage.setItem('campusProducts', JSON.stringify(products));
+    }
+
+    function showView(viewName) {
+      document.getElementById('view-home').classList.add('hidden');
+      document.getElementById('view-sell').classList.add('hidden');
+      document.getElementById('view-buy').classList.add('hidden');
+
+      if (viewName === 'home') document.getElementById('view-home').classList.remove('hidden');
+      if (viewName === 'sell') document.getElementById('view-sell').classList.remove('hidden');
+      if (viewName === 'buy') {
+        document.getElementById('view-buy').classList.remove('hidden');
+        renderProducts();
+      }
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productList');
+      container.innerHTML = '';
+
+      products.forEach(p => {
+        const discount = Math.round(((p.originalPrice - p.sellingPrice) / p.originalPrice) * 100);
+        
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-2xl border transition overflow-hidden flex flex-col justify-between ${
+          p.sold ? 'border-slate-200 opacity-75 bg-slate-50/70' : 'border-slate-200 hover:border-indigo-300 shadow-sm'
+        }`;
+
+        card.innerHTML = `
+          <div class="p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                p.sold ? 'bg-slate-200 text-slate-500' : 'bg-indigo-50 text-indigo-700'
+              }">${p.category}</span>${
+                p.sold 
+                ? '<span class="text-xs font-black text-rose-700 bg-rose-100 px-2 py-0.5 rounded border border-rose-200 uppercase">Already Saled</span>'
+                : `<span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">${discount}% OFF</span>`
+              }
+            </div>
+
+            <h3 class="font-bold text-slate-900 leading-snug">${p.title}</h3>
+
+            <div class="text-xs space-y-1 text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <div><span class="font-semibold text-slate-700">Usage:</span> ${p.usage}</div>
+              <div><span class="font-semibold text-slate-700">Location:</span> ${p.location}</div>
+              <div><span class="font-semibold text-slate-700">Seller:</span> ${p.seller}</div>
+            </div>
+
+            <div class="pt-2 flex items-baseline space-x-2">
+              <span class="text-2xl font-black text-slate-900 ${p.sold ? 'line-through text-slate-400' : ''}">₹${p.sellingPrice}</span>
+              <span class="text-xs text-slate-400 line-through">₹${p.originalPrice}</span>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border-t border-slate-100">
+            ${
+              p.sold 
+ 

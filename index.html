@@ -3,371 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusLoop | Student Item Exchange</title>
+  <title>CampusLoop</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-  </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans">
 
-  <!-- Header -->
   <header class="bg-indigo-950 text-white shadow sticky top-0 z-50">
     <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+      <div class="flex items-center space-x-2 cursor-pointer" onclick="goToTab('home')">
         <div class="bg-amber-400 text-indigo-950 p-2 rounded-lg font-bold">
           <i class="fa-solid fa-repeat"></i>
         </div>
         <div>
           <h1 class="text-lg font-bold tracking-tight">CampusLoop</h1>
-          <p class="text-[11px] text-indigo-200">Campus Pass-Down Portal</p>
+          <p class="text-[11px] text-indigo-200">Campus Pass-Down</p>
         </div>
       </div>
       <div class="flex space-x-2">
-        <button onclick="switchTab('sell')" class="bg-indigo-800 hover:bg-indigo-700 text-white text-xs px-3 py-2 rounded-lg font-semibold">
-          Sell
-        </button>
-        <button onclick="switchTab('buy')" class="bg-amber-400 hover:bg-amber-300 text-indigo-950 text-xs px-3 py-2 rounded-lg font-bold">
-          Buy
-        </button>
+        <button onclick="goToTab('sell')" class="bg-indigo-800 text-white text-xs px-3 py-2 rounded-lg font-semibold">Sell</button>
+        <button onclick="goToTab('buy')" class="bg-amber-400 text-indigo-950 text-xs px-3 py-2 rounded-lg font-bold">Buy</button>
       </div>
     </div>
   </header>
 
   <main class="flex-1 max-w-4xl mx-auto px-4 py-6 w-full">
 
-    <!-- HOME VIEW -->
-    <section id="panel-home" class="view-panel active space-y-6">
+    <!-- HOME -->
+    <section id="panelHome" style="display: block;" class="space-y-6">
       <div class="text-center py-4">
         <h2 class="text-2xl font-extrabold text-slate-900">Campus Essentials Re-Exchange</h2>
-        <p class="text-xs text-slate-600 mt-1">Passing down lab tools, books, and accessories directly within campus.</p>
+        <p class="text-xs text-slate-600 mt-1">Passing down tools directly without lost items.</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Sell Box -->
-        <div onclick="switchTab('sell')" class="bg-white border-2 border-indigo-200 rounded-2xl p-6 shadow-sm active:scale-95 transition cursor-pointer text-center">
-          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3">
-            <i class="fa-solid fa-boxes-packing"></i>
-          </div>
-          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">For Seniors</span>
-          <h3 class="text-xl font-bold text-slate-900 mt-1">Sell an Item</h3>
-          <p class="text-xs text-slate-500 mt-1">Add items with usage duration and your UPI ID. Contact & payment details remain hidden until purchase.</p>
-          <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold">
-            Add New Item →
-          </button>
+        <div onclick="goToTab('sell')" class="bg-white border-2 border-indigo-200 rounded-2xl p-6 text-center cursor-pointer">
+          <h3 class="text-xl font-bold text-slate-900">Sell an Item</h3>
+          <p class="text-xs text-slate-500 mt-1">Add items with usage duration and UPI ID.</p>
+          <button class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold">Open Sell Form →</button>
         </div>
-
-        <!-- Buy Box -->
-        <div onclick="switchTab('buy')" class="bg-white border-2 border-amber-200 rounded-2xl p-6 shadow-sm active:scale-95 transition cursor-pointer text-center">
-          <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-3">
-            <i class="fa-solid fa-bag-shopping"></i>
-          </div>
-          <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">For Juniors</span>
-          <h3 class="text-xl font-bold text-slate-900 mt-1">Buy Products</h3>
-          <p class="text-xs text-slate-500 mt-1">Browse verified senior items for low prices and scan senior QR directly.</p>
-          <button class="mt-4 w-full bg-amber-400 text-indigo-950 py-2 rounded-xl text-xs font-bold">
-            Browse Products →
-          </button>
+        <div onclick="goToTab('buy')" class="bg-white border-2 border-amber-200 rounded-2xl p-6 text-center cursor-pointer">
+          <h3 class="text-xl font-bold text-slate-900">Buy Products</h3>
+          <p class="text-xs text-slate-500 mt-1">Browse low-cost products and scan QR.</p>
+          <button class="mt-4 w-full bg-amber-400 text-indigo-950 py-2 rounded-xl text-xs font-bold">Browse Products →</button>
         </div>
       </div>
     </section>
 
-    <!-- SELL VIEW -->
-    <section id="panel-sell" class="view-panel bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-      <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <div>
-          <h2 class="text-lg font-bold text-slate-900">List an Item for Sale</h2>
-          <p class="text-xs text-slate-400">Your UPI & contact info will only be shown to confirmed buyers.</p>
-        </div>
-        <button onclick="switchTab('home')" class="text-xs bg-slate-100 px-2.5 py-1.5 rounded-lg text-slate-600 font-semibold">Back</button>
+    <!-- SELL -->
+    <section id="panelSell" style="display: none;" class="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h2 class="text-lg font-bold text-slate-900">List an Item (Senior)</h2>
+        <button onclick="goToTab('home')" class="text-xs bg-slate-100 px-3 py-1.5 rounded-lg font-semibold">Back</button>
       </div>
-
-      <form onsubmit="handleFormSubmit(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Product Title</label>
-          <input type="text" id="titleInput" required placeholder="e.g. Engineering Drafter + Holder" class="w-full border p-2.5 rounded-lg text-sm">
+      <form id="sellItemForm" class="space-y-3">
+        <input type="text" id="titleInput" required placeholder="Item Name (e.g. Drafter)" class="w-full border p-2.5 rounded-lg text-sm">
+        <div class="grid grid-cols-2 gap-2">
+          <select id="usageInput" class="border p-2.5 rounded-lg text-sm bg-white">
+            <option value="1 Semester">1 Semester</option>
+            <option value="1 Year">1 Year</option>
+            <option value="2 Years">2 Years</option>
+          </select>
+          <select id="categoryInput" class="border p-2.5 rounded-lg text-sm bg-white">
+            <option value="Tools">Tools/Drafter</option>
+            <option value="Calculator">Calculator</option>
+            <option value="Books">Books</option>
+          </select>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Usage Duration (No. of Years/Terms)</label>
-            <select id="usageInput" class="w-full border p-2.5 rounded-lg text-sm bg-white">
-              <option value="1 Semester (4 Months)">1 Semester (4 Months)</option>
-              <option value="1 Year">1 Year</option>
-              <option value="2 Years">2 Years</option>
-              <option value="3+ Years">3+ Years</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Category</label>
-            <select id="categoryInput" class="w-full border p-2.5 rounded-lg text-sm bg-white">
-              <option value="Lab & Drawing">Lab & Drawing Tools</option>
-              <option value="Electronics">Electronics & Calculators</option>
-              <option value="Books">Textbooks</option>
-              <option value="Hostel">Hostel Essentials</option>
-            </select>
-          </div>
+        <div class="grid grid-cols-2 gap-2">
+          <input type="number" id="origPriceInput" required placeholder="Original ₹" class="border p-2.5 rounded-lg text-sm">
+          <input type="number" id="sellPriceInput" required placeholder="Selling ₹" class="border p-2.5 rounded-lg text-sm">
         </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Original Price (₹)</label>
-            <input type="number" id="origPriceInput" required placeholder="800" class="w-full border p-2.5 rounded-lg text-sm">
+        <div class="border-t pt-2 space-y-2">
+          <p class="text-xs font-bold text-indigo-700">Private Details (Shown Only to Buyer)</p>
+          <input type="text" id="sellerUpiInput" required placeholder="UPI ID (e.g. 9848022338@ybl)" class="w-full border p-2.5 rounded-lg text-sm">
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" id="sellerNameInput" required placeholder="Your Name" class="border p-2.5 rounded-lg text-sm">
+            <input type="tel" id="sellerPhoneInput" required placeholder="Phone No." class="border p-2.5 rounded-lg text-sm">
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Selling Price (₹)</label>
-            <input type="number" id="sellPriceInput" required placeholder="250" class="w-full border p-2.5 rounded-lg text-sm">
-          </div>
+          <input type="text" id="sellerRoomInput" required placeholder="Hostel & Room No." class="w-full border p-2.5 rounded-lg text-sm">
         </div>
-
-        <!-- Hidden Contact & Payment Details -->
-        <div class="border-t pt-3 space-y-3">
-          <div class="text-[11px] font-bold text-indigo-700 uppercase">
-            <i class="fa-solid fa-lock mr-1"></i> Private Payment & Handover Info (Unlocked only when buyer buys)
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Your UPI ID (PhonePe / GPay / Paytm)</label>
-            <input type="text" id="sellerUpiInput" required placeholder="e.g. 9848022338@ybl or username@okhdfcbank" class="w-full border p-2.5 rounded-lg text-sm">
-            <p class="text-[10px] text-slate-400 mt-0.5">Juniors will scan a QR generated with this UPI ID to pay you directly.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Senior Full Name</label>
-              <input type="text" id="sellerNameInput" required placeholder="e.g. Srikar (4th Year)" class="w-full border p-2.5 rounded-lg text-sm">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mobile / WhatsApp Number</label>
-              <input type="tel" id="sellerPhoneInput" required placeholder="e.g. 9848022338" class="w-full border p-2.5 rounded-lg text-sm">
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pickup Location (Hostel & Room No.)</label>
-            <input type="text" id="sellerRoomInput" required placeholder="e.g. BH-2, Room 304" class="w-full border p-2.5 rounded-lg text-sm">
-          </div>
-        </div>
-
-        <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm shadow">
-          Publish Item for Juniors
-        </button>
+        <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm">Publish Product</button>
       </form>
     </section>
 
-    <!-- BUY VIEW -->
-    <section id="panel-buy" class="view-panel space-y-4">
-      <div class="flex items-center justify-between border-b pb-3">
-        <div>
-          <h2 class="text-lg font-bold text-slate-900">Available Products</h2>
-          <p class="text-xs text-slate-500">Pick an item to purchase and unlock direct senior payment QR</p>
-        </div>
-        <button onclick="switchTab('home')" class="text-xs bg-slate-200 px-3 py-1.5 rounded-lg text-slate-700 font-semibold">
-          Back Home
-        </button>
+    <!-- BUY -->
+    <section id="panelBuy" style="display: none;" class="space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h2 class="text-lg font-bold text-slate-900">Campus Store</h2>
+        <button onclick="goToTab('home')" class="text-xs bg-slate-200 px-3 py-1.5 rounded-lg font-semibold">Back</button>
       </div>
-
-      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Products populated here -->
-      </div>
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
     </section>
 
   </main>
-
-  <!-- POPUP PAYMENT & CONTACT REVEAL MODAL -->
-  <div id="paymentModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl my-8">
-      
-      <!-- Checkout Stage -->
-      <div id="checkoutStage" class="space-y-4">
+    <!-- MODAL -->
+  <div id="paymentModal" style="display: none;" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-xl">
+      <div id="checkoutStage" style="display: block;" class="space-y-3">
         <div class="flex justify-between items-center border-b pb-2">
-          <h3 class="font-bold text-slate-900 text-sm">Pay Senior & Confirm</h3>
-          <button onclick="closeModal()" class="text-slate-400 font-bold">✕</button>
+          <h3 class="font-bold text-slate-900 text-sm">Pay Senior</h3>
+          <button onclick="hideModal()" class="text-slate-400 font-bold">✕</button>
         </div>
-
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
-          <div class="text-slate-400 font-bold uppercase">Item Selected</div>
-          <div id="modalItemTitle" class="font-bold text-sm text-slate-800">Item Title</div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border text-xs">
+          <div id="modalItemTitle" class="font-bold text-sm">--</div>
           <div class="flex justify-between font-bold text-indigo-700 pt-1">
-            <span>Payable Amount:</span>
+            <span>Price:</span>
             <span id="modalItemPrice">₹0</span>
           </div>
         </div>
-
-        <!-- Live Generated UPI QR -->
-        <div class="text-center bg-indigo-50 border border-indigo-100 rounded-xl p-3 space-y-2">
-          <div class="text-[11px] font-bold text-indigo-900 uppercase">
-            <i class="fa-solid fa-qrcode mr-1"></i> Scan to Pay Senior Directly
-          </div>
-          <div class="bg-white p-2 rounded-lg inline-block shadow-sm">
-            <img id="modalQrImage" src="" alt="UPI QR Code" class="w-36 h-36 mx-auto">
-          </div>
-          <div class="text-[10px] text-slate-500">
-            Senior UPI ID: <span id="modalUpiId" class="font-mono font-bold text-indigo-950">--</span>
-          </div>
+        <div class="text-center bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
+          <div class="text-[11px] font-bold text-indigo-900">Scan QR to Pay Directly</div>
+          <img id="modalQrImage" src="" class="w-32 h-32 mx-auto my-1 bg-white p-1 rounded">
+          <div class="text-[10px] text-slate-500">UPI: <span id="modalUpiId" class="font-bold"></span></div>
         </div>
-
-        <form onsubmit="executePayment(event)" class="space-y-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Your Name & Roll No.</label>
-            <input type="text" id="buyerInput" required placeholder="e.g. Rahul (ECE 1st Year)" class="w-full border p-2 rounded-lg text-xs">
-          </div>
-
-          <div class="space-y-1 text-xs">
-            <label class="block font-bold text-slate-700 uppercase">Payment Option</label>
-            <label class="flex items-center space-x-2 border p-2 rounded-lg cursor-pointer">
-              <input type="radio" name="payMode" checked>
-              <span>I Scanned & Paid via UPI / QR</span>
-            </label>
-            <label class="flex items-center space-x-2 border p-2 rounded-lg cursor-pointer">
-              <input type="radio" name="payMode">
-              <span>Pay on Handover (Spot UPI / Cash)</span>
-            </label>
-          </div>
-
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition">
-            I Have Paid / Confirm Order
-          </button>
+        <form id="payConfirmForm" class="space-y-2">
+          <input type="text" id="buyerInput" required placeholder="Your Name & Roll No." class="w-full border p-2 rounded-lg text-xs">
+          <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs">I Have Paid / Confirm Order</button>
         </form>
       </div>
 
-      <!-- Success & Contact Revealed Stage -->
-      <div id="receiptStage" class="hidden space-y-3">
-        <div class="text-center">
-          <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1">
-            <i class="fa-solid fa-check text-lg"></i>
-          </div>
-          <h3 class="text-base font-bold text-slate-900">Order Locked!</h3>
-          <p class="text-[11px] text-slate-500">Item is marked as saled. Contact senior below to collect.</p>
+      <div id="receiptStage" style="display: none;" class="space-y-3 text-center">
+        <h3 class="text-base font-bold text-slate-900 text-emerald-600">Order Locked!</h3>
+        <div class="bg-indigo-50 border border-indigo-200 p-2.5 rounded-xl">
+          <div class="text-[10px] font-bold text-indigo-700">Handover OTP</div>
+          <div id="receiptOtp" class="text-2xl font-black text-indigo-950">4921</div>
+          <p class="text-[10px] text-indigo-600">Share this code with senior.</p>
         </div>
-
-        <!-- 4-digit code -->
-        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 text-center">
-          <div class="text-[10px] font-bold text-indigo-700 uppercase">Handover Verification OTP</div>
-          <div id="receiptOtp" class="text-2xl font-black text-indigo-950 tracking-wider">4921</div>
-          <p class="text-[10px] text-indigo-600">Give this OTP to senior when taking the item.</p>
+        <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-xl text-xs text-left space-y-1">
+          <div><b>Seller:</b> <span id="receiptSellerName"></span></div>
+          <div><b>Phone:</b> <span id="receiptSellerPhone"></span></div>
+          <div><b>Room:</b> <span id="receiptSellerRoom"></span></div>
         </div>
-
-        <!-- Revealed Senior Details -->
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs space-y-2">
-          <div class="font-bold text-amber-900 uppercase text-[10px] border-b border-amber-200 pb-1">
-            <i class="fa-solid fa-id-badge mr-1"></i> Senior Handover Details
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">Seller Name:</span>
-            <span id="receiptSellerName" class="font-bold text-slate-800">--</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">Mobile Number:</span>
-            <span id="receiptSellerPhone" class="font-bold text-indigo-900">--</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">Pickup Location:</span>
-            <span id="receiptSellerRoom" class="font-bold text-slate-800">--</span>
-          </div>
-        </div>
-
-        <button onclick="closeModal()" class="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold">
-          Close & Return to Catalog
-        </button>
+        <button onclick="hideModal()" class="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold">Done</button>
       </div>
-
     </div>
   </div>
 
   <script>
     let inventory = [
-      {
-        id: 1,
-        title: "Omega Engineering Drafter with Clip",
-        category: "Lab & Drawing",
-        usage: "1 Year",
-        origPrice: 850,
-        price: 250,
-        upiId: "9848022338@ybl",
-        sellerName: "Srikar (4th Year)",
-        sellerPhone: "9848022338",
-        sellerRoom: "BH-2, Room 304",
-        sold: false
-      },
-      {
-        id: 2,
-        title: "Casio fx-991EX Scientific Calculator",
-        category: "Electronics",
-        usage: "2 Years",
-        origPrice: 1400,
-        price: 520,
-        upiId: "kavitha94@oksbi",
-        sellerName: "Kavitha (Final Year)",
-        sellerPhone: "9440123456",
-        sellerRoom: "GH-1, Room 112",
-        sold: false
-      }
+      { id: 1, title: "Mini Drafter + Bag", category: "Tools", usage: "1 Year", origPrice: 850, price: 250, upiId: "9848022338@ybl", sellerName: "Srikar", sellerPhone: "9848022338", sellerRoom: "BH-2, Room 304", sold: false },
+      { id: 2, title: "Scientific Calculator 991EX", category: "Calculator", usage: "2 Years", origPrice: 1400, price: 520, upiId: "kavitha@oksbi", sellerName: "Kavitha", sellerPhone: "9440123456", sellerRoom: "GH-1, Room 112", sold: false }
     ];
-
     let currentBuyId = null;
 
-    function switchTab(tabId) {
-      document.querySelectorAll('.view-panel').forEach(panel => {
-        panel.classList.remove('active');
-      });
-      const activePanel = document.getElementById('panel-' + tabId);
-      if (activePanel) {
-        activePanel.classList.add('active');
-      }
-      if (tabId === 'buy') {
-        loadProducts();
-      }
+    function goToTab(tab) {
+      document.getElementById('panelHome').style.display = (tab === 'home') ? 'block' : 'none';
+      document.getElementById('panelSell').style.display = (tab === 'sell') ? 'block' : 'none';
+      document.getElementById('panelBuy').style.display = (tab === 'buy') ? 'block' : 'none';
+      if (tab === 'buy') renderCatalog();
+      window.scrollTo(0,0);
     }
 
-    function loadProducts() {
+    function renderCatalog() {
       const container = document.getElementById('productGrid');
       container.innerHTML = '';
-
       inventory.forEach(item => {
-        const div = document.createElement('div');
-        div.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2.5";
-        
-        div.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${item.category}</span>
-            ${item.sold 
-              ? '<span class="text-xs font-black text-rose-700 bg-rose-100 px-2 py-0.5 rounded uppercase">Already Saled</span>' 
-              : '<span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Available</span>'}
+        const d = document.createElement('div');
+        d.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2";
+        d.innerHTML = `
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-slate-500">${item.category}</span>
+            ${item.sold ? '<span class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded uppercase">Already Saled</span>' : '<span class="font-bold text-emerald-600">Available</span>'}
           </div>
-          <h4 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h4>
-          
-          <div class="text-xs text-slate-500 space-y-1 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
-            <div><span class="font-semibold text-slate-700">Usage:</span> ${item.usage}</div>
-            <div class="flex items-center text-slate-400">
-              <i class="fa-solid fa-lock text-[10px] mr-1.5 text-indigo-500"></i>
-              <span>UPI & Senior contact locked (Shown only upon buying)</span>
-            </div>
-          </div>
-
-          <div class="flex items-baseline space-x-2 pt-1">
-            <span class="text-lg font-black text-slate-900 ${item.sold ? 'line-through text-slate-400' : ''}">₹${item.price}</span>
-            <span class="text-xs text-slate-400 line-through">₹${item.origPrice}</span>
-          </div>
-
-          <div class="pt-1">
-            ${item.sold 
-              ? '<button disabled class="w-full py-2 bg-slate-200 text-slate-400 text-xs font-bold rounded-lg uppercase cursor-not-allowed">Already Saled</button>' 
-              : `<button onclick="startBuyProcess(${item.id})" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow transition">Buy & Pay Senior</button>`}
-          </div>
+          <h4 class="font-bold text-slate-800 text-sm">${item.title}</h4>
+          <div class="text-xs text-slate-500">Used: ${item.usage} | Contact Hidden</div>
+          <div class="text-lg font-black text-slate-900 ${item.sold ? 'line-through text-slate-400' : ''}">₹${item.price} <span class="text-xs text-slate-400 line-through">₹${item.origPrice}</span></div>
+          ${item.sold ? '<button disabled class="w-full py-2 bg-slate-200 text-slate-400 text-xs font-bold rounded-lg uppercase">Already Saled</button>' : `<button onclick="openCheckout(${item.id})" class="w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-lg">Buy & Pay Senior</button>`}
         `;
-        container.appendChild(div);
+        container.appendChild(d);
       });
     }
 
-    function handleFormSubmit(e) {
+    function openCheckout(id) {
+      currentBuyId = id;
+      const p = inventory.find(i => i.id === id);
+      if (!p || p.sold) return;
+      document.getElementById('modalItemTitle').innerText = p.title;
+      document.getElementById('modalItemPrice').innerText = '₹' + p.price;
+      document.getElementById('modalUpiId').innerText = p.upiId;
+      const upi = 'upi://pay?pa=' + encodeURIComponent(p.upiId) + '&am=' + p.price;
+      document.getElementById('modalQrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(upi);
+      document.getElementById('checkoutStage').style.display = 'block';
+      document.getElementById('receiptStage').style.display = 'none';
+      document.getElementById('paymentModal').style.display = 'flex';
+    }
+
+    function hideModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+      renderCatalog();
+    }
+
+    document.getElementById('sellItemForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const newItem = {
+      inventory.unshift({
         id: Date.now(),
         title: document.getElementById('titleInput').value,
-        category: document.getElementById('categoryInput').value,
         usage: document.getElementById('usageInput').value,
+        category: document.getElementById('categoryInput').value,
         origPrice: document.getElementById('origPriceInput').value,
         price: document.getElementById('sellPriceInput').value,
         upiId: document.getElementById('sellerUpiInput').value,
@@ -375,42 +207,24 @@
         sellerPhone: document.getElementById('sellerPhoneInput').value,
         sellerRoom: document.getElementById('sellerRoomInput').value,
         sold: false
-      };
+      });
+      alert('Item Listed!');
+      goToTab('buy');
+    });
 
-      inventory.unshift(newItem);
-      alert('Item Listed Successfully! Your UPI & phone will remain private until a junior clicks to buy.');
-      switchTab('buy');
-    }
-
-    function startBuyProcess(id) {
-      currentBuyId = id;
-      const product = inventory.find(i => i.id === id);
-      if (!product || product.sold) return;
-
-      document.getElementById('modalItemTitle').innerText = product.title;
-      document.getElementById('modalItemPrice').innerText = '₹' + product.price;
-      document.getElementById('modalUpiId').innerText = product.upiId;
-
-      // Generate dynamic UPI payment QR
-      const upiLink = `upi://pay?pa=${encodeURIComponent(product.upiId)}&pn=${encodeURIComponent(product.sellerName)}&am=${product.price}&cu=INR&tn=${encodeURIComponent('CampusLoop: ' + product.title)}`;
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
-      document.getElementById('modalQrImage').src = qrApiUrl;
-      
-      document.getElementById('checkoutStage').classList.remove('hidden');
-      document.getElementById('receiptStage').classList.add('hidden');
-      document.getElementById('paymentModal').classList.remove('hidden');
-    }
-
-    function executePayment(e) {
+    document.getElementById('payConfirmForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const product = inventory.find(i => i.id === currentBuyId);
-      if (product) {
-        product.sold = true;
-
-        const otp = Math.floor(1000 + Math.random() * 9000);
-        document.getElementById('receiptOtp').innerText = otp;
-        document.getElementById('receiptSellerName').innerText = product.sellerName;
-        document.getElementById('receiptSellerPhone').innerText = product.sellerPhone;
-        document.getElementById('receiptSellerRoom').innerText = product.sellerRoom;
-
-        document.getElementById('check
+      const p = inventory.find(i => i.id === currentBuyId);
+      if (p) {
+        p.sold = true;
+        document.getElementById('receiptOtp').innerText = Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('receiptSellerName').innerText = p.sellerName;
+        document.getElementById('receiptSellerPhone').innerText = p.sellerPhone;
+        document.getElementById('receiptSellerRoom').innerText = p.sellerRoom;
+        document.getElementById('checkoutStage').style.display = 'none';
+        document.getElementById('receiptStage').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

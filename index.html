@@ -32,21 +32,9 @@
 
   <!-- 1. LANDING & LOGIN GATEWAY -->
   <section id="loginGateView" class="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center max-w-md mx-auto w-full">
+    <!-- Pass It On Hero Artwork -->
     <div class="w-full max-w-xs mb-4 rounded-2xl overflow-hidden border border-[#1f2e2b] bg-[#131d1b] shadow-lg">
-      <svg viewBox="0 0 500 320" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
-        <rect width="500" height="320" fill="#e8f3fa"/>
-        <circle cx="250" cy="160" r="140" fill="#d4e8f5"/>
-        <path d="M 180 80 Q 250 40 330 75" fill="none" stroke="#2563eb" stroke-width="14" stroke-linecap="round"/>
-        <polygon points="340,77 315,62 328,92" fill="#2563eb"/>
-        <path d="M 330 230 Q 250 270 170 235" fill="none" stroke="#2563eb" stroke-width="14" stroke-linecap="round"/>
-        <polygon points="160,233 185,248 172,218" fill="#2563eb"/>
-        <circle cx="160" cy="120" r="30" fill="#f87171"/>
-        <rect x="120" y="160" width="80" height="90" rx="20" fill="#3b82f6"/>
-        <circle cx="340" cy="120" r="30" fill="#fbbf24"/>
-        <rect x="300" y="160" width="80" height="90" rx="20" fill="#f97316"/>
-        <rect x="215" y="130" width="70" height="55" rx="8" fill="#d97706"/>
-        <text x="250" y="163" fill="#ffffff" font-size="16" font-family="sans-serif" font-weight="bold" text-anchor="middle">PASS IT ON</text>
-      </svg>
+      <img src="hero.jpg" alt="PassItOn Exchange" class="w-full h-auto object-cover">
     </div>
 
     <h2 class="text-2xl font-black text-white tracking-tight">Welcome to PassItOn</h2>
@@ -112,9 +100,9 @@
           GPS Detect
         </button>
         <select onchange="changeZoneFilter(this.value)" class="bg-[#0d1514] border border-[#1f2e2b] text-[10px] text-slate-300 rounded px-1.5 py-1">
-          <option value="campus">Campus Quad (<10 km)</option>
-          <option value="town">Hostel Road (<10 km)</option>
-          <option value="far">External Area (>10 km)</option>
+          <option value="campus">Campus Quad (&lt;10 km)</option>
+          <option value="town">Hostel Road (&lt;10 km)</option>
+          <option value="far">External Area (&gt;10 km)</option>
         </select>
       </div>
     </div>
@@ -170,7 +158,6 @@
           </div>
         </div>
 
-        <!-- SELLER PAYMENT SETUP (UPI ID + QR UPLOAD) -->
         <div class="border-t border-[#1f2e2b] pt-3 space-y-2">
           <p class="text-[11px] font-bold text-[#34d399] uppercase">Payment Setup (Senior Settlement)</p>
           <div>
@@ -197,7 +184,7 @@
     </section>
 
   </main>
-    <!-- BOTTOM NAVIGATION (3 TABS: Browse, Sell, Orders) -->
+    <!-- BOTTOM NAVIGATION (Browse, Sell, Orders) -->
   <nav id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 bg-[#131d1b] border-t border-[#1f2e2b] py-2 z-40 max-w-lg mx-auto">
     <div class="grid grid-cols-3 text-center">
       <button onclick="switchTab('browse')" id="nav-browse" class="nav-btn active flex flex-col items-center justify-center space-y-1">
@@ -256,15 +243,12 @@
 
     let userOrders = [];
 
-    // STRICT 10-DIGIT OTP DISPATCH
     function sendLoginOtp(e) {
       e.preventDefault();
       const phoneInput = document.getElementById('loginPhone').value.trim();
-
-      // Enforce strict Indian 10-digit format
       const regex = /^[6-9]\d{9}$/;
       if (!regex.test(phoneInput)) {
-        alert("Mobile number kacchitam ga 10 digits undali (starts with 6, 7, 8, or 9). Single or short digits accept cheyadhu.");
+        alert("Mobile number kacchitam ga 10 digits undali (starts with 6, 7, 8, or 9).");
         return;
       }
 
@@ -279,7 +263,6 @@
       document.getElementById('mobileStepForm').classList.add('hidden');
       document.getElementById('otpVerifyForm').classList.remove('hidden');
 
-      // Instant live notification simulation
       setTimeout(() => {
         alert(`PassItOn OTP Code: [ ${generatedAuthOtp} ] for mobile +91 ${phoneInput}`);
       }, 400);
@@ -330,7 +313,6 @@
       if (tabId === 'orders') renderOrders();
     }
 
-    // 10 KM GEOLOCATION MODULE
     function detectGpsLocation() {
       if (!navigator.geolocation) {
         alert("Geolocation not supported. Defaulting to 10 km campus boundary.");
@@ -353,10 +335,10 @@
 
     function changeZoneFilter(val) {
       if (val === 'far') {
-        activeRadius = 100; // broad view
+        activeRadius = 100;
         document.getElementById('currentLocLabel').innerText = "All Locations (>10 km included)";
       } else {
-        activeRadius = 10; // strict rule
+        activeRadius = 10;
         document.getElementById('currentLocLabel').innerText = "10 km Radius Boundary";
       }
       renderCatalog();

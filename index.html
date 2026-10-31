@@ -9,7 +9,6 @@
   <style>
     body { background-color: #0d1514; color: #e2e8f0; font-family: system-ui, sans-serif; }
     .nav-btn.active { color: #34d399; font-weight: 700; }
-    .nav-btn.active svg, .nav-btn.active i { color: #34d399; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col pb-20 select-none">
@@ -31,113 +30,130 @@
     </div>
   </header>
 
-  <!-- 1. LANDING & LOGIN GATEWAY (First Time Open) -->
+  <!-- 1. LANDING & LOGIN GATEWAY -->
   <section id="loginGateView" class="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center max-w-md mx-auto w-full">
-    <!-- Pass It On Hero Vector Artwork -->
     <div class="w-full max-w-xs mb-4 rounded-2xl overflow-hidden border border-[#1f2e2b] bg-[#131d1b] shadow-lg">
       <svg viewBox="0 0 500 320" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
         <rect width="500" height="320" fill="#e8f3fa"/>
-        <!-- Background circle -->
         <circle cx="250" cy="160" r="140" fill="#d4e8f5"/>
-        <!-- Exchange arrows -->
         <path d="M 180 80 Q 250 40 330 75" fill="none" stroke="#2563eb" stroke-width="14" stroke-linecap="round"/>
         <polygon points="340,77 315,62 328,92" fill="#2563eb"/>
         <path d="M 330 230 Q 250 270 170 235" fill="none" stroke="#2563eb" stroke-width="14" stroke-linecap="round"/>
         <polygon points="160,233 185,248 172,218" fill="#2563eb"/>
-        <!-- Left person avatar -->
         <circle cx="160" cy="120" r="30" fill="#f87171"/>
         <rect x="120" y="160" width="80" height="90" rx="20" fill="#3b82f6"/>
-        <!-- Right person avatar -->
         <circle cx="340" cy="120" r="30" fill="#fbbf24"/>
         <rect x="300" y="160" width="80" height="90" rx="20" fill="#f97316"/>
-        <!-- Exchanged Item Box -->
         <rect x="215" y="130" width="70" height="55" rx="8" fill="#d97706"/>
-        <text x="250" y="163" fill="#ffffff" font-size="16" font-family="sans-serif" font-weight="bold" text-anchor="middle">ITEM</text>
+        <text x="250" y="163" fill="#ffffff" font-size="16" font-family="sans-serif" font-weight="bold" text-anchor="middle">PASS IT ON</text>
       </svg>
     </div>
 
     <h2 class="text-2xl font-black text-white tracking-tight">Welcome to PassItOn</h2>
-    <p class="text-xs text-slate-400 mt-1 mb-6">
-      Seniors pass down hostel essentials directly to juniors. Sign in to view available items within 10 km.
+    <p class="text-xs text-slate-400 mt-1 mb-5">
+      Seniors pass down hostel essentials directly to juniors within 10 km.
     </p>
 
-    <!-- Simple Login Card -->
+    <!-- 10-Digit Mobile + OTP Login Box -->
     <div class="bg-[#131d1b] border border-[#1f2e2b] rounded-2xl p-5 w-full text-left shadow-md space-y-3">
-      <div class="text-xs font-bold text-[#34d399] uppercase tracking-wider">Member Sign In</div>
-      <form onsubmit="doLogin(event)" class="space-y-3">
+      <div class="text-xs font-bold text-[#34d399] uppercase tracking-wider">Member Mobile Verification</div>
+
+      <!-- Step A: Enter Details -->
+      <form id="mobileStepForm" onsubmit="sendLoginOtp(event)" class="space-y-3">
         <div>
           <label class="block text-[11px] font-bold text-slate-400 mb-1">Your Full Name</label>
           <input type="text" id="loginName" required placeholder="e.g. Srikar" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#34d399]">
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 mb-1">Phone Number</label>
-          <input type="tel" id="loginPhone" required placeholder="10-digit mobile" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#34d399]">
+          <label class="block text-[11px] font-bold text-slate-400 mb-1">Mobile Number (Exact 10 Digits)</label>
+          <div class="flex">
+            <span class="bg-[#1f2e2b] border border-[#1f2e2b] border-r-0 px-2.5 py-2.5 rounded-l-xl text-xs text-slate-400 font-bold">+91</span>
+            <input type="tel" id="loginPhone" required maxlength="10" minlength="10" pattern="[6-9][0-9]{9}" placeholder="9876543210" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-r-xl text-xs text-white font-mono focus:outline-none focus:border-[#34d399]">
+          </div>
+          <span class="text-[10px] text-slate-500">Must be a valid 10-digit Indian phone number.</span>
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-slate-400 mb-1">Hostel / Campus Zone</label>
+          <label class="block text-[11px] font-bold text-slate-400 mb-1">Hostel Room & Zone</label>
           <input type="text" id="loginRoom" required placeholder="e.g. BH-2 Room 304" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#34d399]">
         </div>
         <button type="submit" class="w-full bg-[#10b981] hover:bg-[#059669] text-slate-950 font-black py-3 rounded-xl text-xs tracking-wide shadow-md">
-          Enter PassItOn Marketplace
+          Get Verification OTP
+        </button>
+      </form>
+
+      <!-- Step B: Verify OTP -->
+      <form id="otpVerifyForm" onsubmit="verifyLoginOtp(event)" class="hidden space-y-3 pt-2 border-t border-[#1f2e2b]">
+        <div class="bg-[#1a4237] p-2.5 rounded-xl text-center">
+          <p class="text-[11px] text-slate-300">OTP Sent to <b id="displayTargetPhone" class="text-[#34d399]"></b></p>
+          <p class="text-[10px] text-slate-400 mt-0.5">(Check notification/alert)</p>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 mb-1">Enter 4-Digit OTP</label>
+          <input type="number" id="inputOtpVal" required maxlength="4" placeholder="Enter OTP" class="w-full text-center tracking-widest font-black text-lg bg-[#0d1514] border border-[#1f2e2b] p-2 rounded-xl text-[#34d399] focus:outline-none focus:border-[#34d399]">
+        </div>
+        <button type="submit" class="w-full bg-[#34d399] text-slate-950 font-black py-2.5 rounded-xl text-xs tracking-wide">
+          Verify & Enter Marketplace
         </button>
       </form>
     </div>
   </section>
 
   <!-- 2. MAIN APP CONTENT (After Login) -->
-  <main id="appMainContent" class="hidden flex-1 max-w-lg mx-auto w-full px-4 pt-4">
+  <main id="appMainContent" class="hidden flex-1 max-w-lg mx-auto w-full px-4 pt-3">
+
+    <!-- LOCATION BAR & 10 KM FILTER -->
+    <div class="bg-[#131d1b] border border-[#1f2e2b] p-2.5 rounded-xl mb-3 flex items-center justify-between text-xs">
+      <div class="flex items-center space-x-1.5 overflow-hidden">
+        <i class="fa-solid fa-location-dot text-[#34d399] text-sm"></i>
+        <span id="currentLocLabel" class="truncate text-slate-300 text-[11px] font-bold">10 km Campus Radius</span>
+      </div>
+      <div class="flex space-x-1.5 flex-shrink-0">
+        <button onclick="detectGpsLocation()" class="bg-[#1a4237] text-[#34d399] px-2 py-1 rounded text-[10px] font-bold">
+          GPS Detect
+        </button>
+        <select onchange="changeZoneFilter(this.value)" class="bg-[#0d1514] border border-[#1f2e2b] text-[10px] text-slate-300 rounded px-1.5 py-1">
+          <option value="campus">Campus Quad (<10 km)</option>
+          <option value="town">Hostel Road (<10 km)</option>
+          <option value="far">External Area (>10 km)</option>
+        </select>
+      </div>
+    </div>
 
     <!-- TAB 1: BROWSE FEED -->
     <section id="tab-browse" class="tab-view space-y-4">
       <div class="flex items-center justify-between text-xs text-slate-400">
         <span class="font-bold text-white">Items within 10 km</span>
-        <span class="bg-[#131d1b] border border-[#1f2e2b] px-2 py-1 rounded-md text-[10px] text-[#34d399]">● Verified Hostels</span>
+        <span class="bg-[#131d1b] border border-[#1f2e2b] px-2 py-0.5 rounded text-[10px] text-[#34d399]">● Strict 10 km Rule</span>
       </div>
 
-      <!-- Feed Grid -->
-      <div id="browseListContainer" class="grid grid-cols-2 gap-3">
-        <!-- Rendered by JS -->
-      </div>
+      <div id="browseListContainer" class="grid grid-cols-2 gap-3"></div>
 
       <!-- Customer Reviews Sample Section -->
       <div class="mt-6 pt-4 border-t border-[#1f2e2b] space-y-3">
         <h3 class="text-base font-bold text-white">Customer reviews</h3>
         <p class="text-xs text-slate-400">Only verified buyers who completed payments can post reviews.</p>
-
-        <div id="reviewsList" class="bg-[#131d1b] border border-[#1f2e2b] p-4 rounded-2xl space-y-2">
+        <div class="bg-[#131d1b] border border-[#1f2e2b] p-4 rounded-2xl space-y-2">
           <div class="text-amber-400 text-xs">★★★★★</div>
           <span class="bg-[#242115] text-[#fbbf24] text-[10px] font-bold px-2 py-0.5 rounded">Sample review</span>
           <p class="text-xs text-slate-300 leading-relaxed">
-            "The mini drafter worked exactly like the photo. I paid via UPI QR and collected it from the hostel gate the same evening."
+            "The mini drafter worked exactly like the photo. I paid directly via senior's uploaded QR and collected it easily."
           </p>
           <p class="text-[10px] text-slate-500 font-semibold">Junior Buyer • Mini drafter</p>
         </div>
       </div>
     </section>
-        <!-- TAB 2: EXCHANGE PASS-DOWN -->
-    <section id="tab-exchange" class="tab-view hidden space-y-4">
-      <div class="bg-[#131d1b] border border-[#1f2e2b] p-5 rounded-2xl text-center space-y-2">
-        <div class="w-10 h-10 bg-[#1a4237] text-[#34d399] rounded-xl flex items-center justify-center mx-auto text-lg font-bold">
-          <i class="fa-solid fa-arrow-right-arrow-left"></i>
-        </div>
-        <h3 class="text-sm font-bold text-white">Peer-to-Peer Direct Exchange</h3>
-        <p class="text-xs text-slate-400">
-          Seniors leaving campus list items without fees. Juniors inspect photos, pay directly, and pick up using OTP verification.
-        </p>
-      </div>
-    </section>
 
-    <!-- TAB 3: SELL ITEM -->
+    <!-- TAB 2: SELL ITEM WITH PHOTO & SELLER QR CODE -->
     <section id="tab-sell" class="tab-view hidden bg-[#131d1b] border border-[#1f2e2b] p-5 rounded-2xl space-y-4">
       <h3 class="text-sm font-bold text-white border-b border-[#1f2e2b] pb-2">List an Item on PassItOn</h3>
       <form onsubmit="handleNewItemPost(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block text-slate-400 mb-1 font-bold">Item Photo (Required)</label>
-          <input type="file" id="sellPhotoInput" accept="image/*" required onchange="processPhotoUpload(event)" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2 rounded-xl text-slate-300">
+          <label class="block text-slate-400 mb-1 font-bold">1. Item Photo (Mandatory)</label>
+          <input type="file" id="sellPhotoInput" accept="image/*" required onchange="processPhotoUpload(event, 'item')" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2 rounded-xl text-slate-300">
         </div>
         <div>
           <label class="block text-slate-400 mb-1 font-bold">Title</label>
-          <input type="text" id="sellTitleInput" required placeholder="e.g. Casio Calculator fx-991EX" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-white">
+          <input type="text" id="sellTitleInput" required placeholder="e.g. Casio fx-991EX Calculator" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-white">
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
@@ -153,34 +169,40 @@
             </select>
           </div>
         </div>
-        <div>
-          <label class="block text-slate-400 mb-1 font-bold">Your UPI ID (For Direct Payments)</label>
-          <input type="text" id="sellUpiInput" required placeholder="e.g. 9848022338@ybl" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-white font-mono">
+
+        <!-- SELLER PAYMENT SETUP (UPI ID + QR UPLOAD) -->
+        <div class="border-t border-[#1f2e2b] pt-3 space-y-2">
+          <p class="text-[11px] font-bold text-[#34d399] uppercase">Payment Setup (Senior Settlement)</p>
+          <div>
+            <label class="block text-slate-400 mb-1 font-bold">Your UPI ID</label>
+            <input type="text" id="sellUpiInput" required placeholder="e.g. 9848022338@ybl" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2.5 rounded-xl text-white font-mono">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1 font-bold">2. Upload Your PhonePe/GPay QR Code Image</label>
+            <input type="file" id="sellQrInput" accept="image/*" required onchange="processPhotoUpload(event, 'qr')" class="w-full bg-[#0d1514] border border-[#1f2e2b] p-2 rounded-xl text-slate-300">
+            <span class="text-[10px] text-slate-500">Upload screenshot of your QR code so buyers scan it directly.</span>
+          </div>
         </div>
+
         <button type="submit" class="w-full bg-[#10b981] hover:bg-[#059669] text-slate-950 font-black py-3 rounded-xl">
           Publish to Nearby Juniors
         </button>
       </form>
     </section>
 
-    <!-- TAB 4: ORDERS & DISPUTE RETURNS -->
+    <!-- TAB 3: ORDERS & RETURNS -->
     <section id="tab-orders" class="tab-view hidden space-y-3">
-      <h3 class="text-sm font-bold text-white border-b border-[#1f2e2b] pb-2">My Purchased Orders</h3>
+      <h3 class="text-sm font-bold text-white border-b border-[#1f2e2b] pb-2">My Orders & Handover Passes</h3>
       <div id="ordersListContainer" class="space-y-3"></div>
     </section>
 
   </main>
-
-  <!-- BOTTOM NAVIGATION BAR (Exact Like Image 1) -->
+    <!-- BOTTOM NAVIGATION (3 TABS: Browse, Sell, Orders) -->
   <nav id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 bg-[#131d1b] border-t border-[#1f2e2b] py-2 z-40 max-w-lg mx-auto">
-    <div class="grid grid-cols-4 text-center">
+    <div class="grid grid-cols-3 text-center">
       <button onclick="switchTab('browse')" id="nav-browse" class="nav-btn active flex flex-col items-center justify-center space-y-1">
         <i class="fa-solid fa-table-cells-large text-base"></i>
         <span class="text-[10px]">Browse</span>
-      </button>
-      <button onclick="switchTab('exchange')" id="nav-exchange" class="nav-btn text-slate-400 flex flex-col items-center justify-center space-y-1">
-        <i class="fa-solid fa-repeat text-base"></i>
-        <span class="text-[10px]">Exchange</span>
       </button>
       <button onclick="switchTab('sell')" id="nav-sell" class="nav-btn text-slate-400 flex flex-col items-center justify-center space-y-1">
         <i class="fa-regular fa-square-plus text-base"></i>
@@ -193,18 +215,24 @@
     </div>
   </nav>
 
-  <!-- DIRECT PAYMENT MODAL -->
-  <div id="payModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-    <div class="bg-[#131d1b] border border-[#1f2e2b] rounded-2xl max-w-xs w-full p-5 space-y-3 text-center">
+  <!-- DIRECT SELLER QR PAYMENT DIALOG -->
+  <div id="payModal" class="hidden fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4">
+    <div class="bg-[#131d1b] border border-[#1f2e2b] rounded-2xl max-w-xs w-full p-5 space-y-3 text-center shadow-2xl">
       <h4 class="text-sm font-bold text-white">Direct Peer Payment</h4>
       <div id="payItemTitle" class="text-xs text-slate-300">--</div>
       <div id="payItemPrice" class="text-xl font-black text-[#34d399]">₹0</div>
-      <div class="bg-white p-2 rounded-xl inline-block mx-auto">
-        <img id="payQrCode" src="" alt="UPI QR" class="w-36 h-36 mx-auto">
+
+      <div class="bg-white p-2.5 rounded-xl inline-block mx-auto border border-slate-200">
+        <img id="payQrCode" src="" alt="Seller QR Code" class="w-40 h-40 mx-auto object-contain">
       </div>
-      <div class="text-[10px] text-slate-400">Scan to pay directly into senior's account.</div>
-      <button onclick="confirmOrderSuccess()" class="w-full bg-[#10b981] text-slate-950 font-bold py-2 rounded-xl text-xs">
-        Confirm Payment Sent
+
+      <div class="text-[10px] text-slate-400 space-y-0.5">
+        <div>Seller UPI ID: <span id="payUpiText" class="text-white font-mono font-bold"></span></div>
+        <p class="text-emerald-400 font-bold">100% Direct Settlement. No Commission.</p>
+      </div>
+
+      <button onclick="confirmOrderSuccess()" class="w-full bg-[#10b981] hover:bg-[#059669] text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">
+        I Have Paid / Confirm Order
       </button>
       <button onclick="closePayModal()" class="w-full text-xs text-slate-500 py-1">Cancel</button>
     </div>
@@ -213,31 +241,64 @@
   <script>
     let activeUser = null;
     let selectedItemId = null;
-    let uploadedPhotoData = null;
+    let uploadedItemPhoto = null;
+    let uploadedSellerQr = null;
+    let generatedAuthOtp = null;
+    let pendingUserData = null;
+    let activeRadius = 10;
 
     let itemsCatalog = [
-      { id: 1, title: "Steel trunk with lock", price: 500, distance: "6.5 km away", condition: "Usable", seller: "Senior (BH-1)", upi: "9848022338@ybl", photo: "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=400&q=80", sold: false },
-      { id: 2, title: "Single mattress, 4 inch", price: 900, distance: "8.7 km away", condition: "Good", seller: "Senior (BH-3)", upi: "senior@okhdfcbank", photo: "https://images.unsplash.com/photo-1540518614846-7ede433c4ef7?auto=format&fit=crop&w=400&q=80", sold: false },
-      { id: 3, title: "Induction cooktop, 1800 W", price: 800, distance: "9.6 km away", condition: "Like new", seller: "Senior (GH-2)", upi: "cooktop@ybl", photo: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80", sold: false }
+      { id: 1, title: "Steel trunk with lock", price: 500, distanceKm: 6.5, condition: "Usable", seller: "Senior (BH-1)", phone: "9848022338", room: "BH-1 Room 204", upi: "9848022338@ybl", photo: "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=400&q=80", qr: "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=9848022338@ybl&am=500", sold: false },
+      { id: 2, title: "Single mattress, 4 inch", price: 900, distanceKm: 8.7, condition: "Good", seller: "Senior (BH-3)", phone: "9440123456", room: "BH-3 Room 112", upi: "senior@okhdfcbank", photo: "https://images.unsplash.com/photo-1540518614846-7ede433c4ef7?auto=format&fit=crop&w=400&q=80", qr: "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=senior@okhdfcbank&am=900", sold: false },
+      { id: 3, title: "Induction cooktop, 1800 W", price: 800, distanceKm: 9.6, condition: "Like new", seller: "Senior (GH-2)", phone: "9988776655", room: "GH-2 Room 402", upi: "cooktop@ybl", photo: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80", qr: "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=cooktop@ybl&am=800", sold: false },
+      { id: 4, title: "B.S. Grewal Mathematics Book", price: 200, distanceKm: 18.5, condition: "Good", seller: "External Student", phone: "9123456789", room: "Off-Campus Apts", upi: "maths@ybl", photo: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80", qr: "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=maths@ybl&am=200", sold: false }
     ];
 
     let userOrders = [];
 
-    function doLogin(e) {
+    // STRICT 10-DIGIT OTP DISPATCH
+    function sendLoginOtp(e) {
       e.preventDefault();
-      activeUser = {
-        name: document.getElementById('loginName').value,
-        phone: document.getElementById('loginPhone').value,
-        room: document.getElementById('loginRoom').value
+      const phoneInput = document.getElementById('loginPhone').value.trim();
+
+      // Enforce strict Indian 10-digit format
+      const regex = /^[6-9]\d{9}$/;
+      if (!regex.test(phoneInput)) {
+        alert("Mobile number kacchitam ga 10 digits undali (starts with 6, 7, 8, or 9). Single or short digits accept cheyadhu.");
+        return;
+      }
+
+      pendingUserData = {
+        name: document.getElementById('loginName').value.trim(),
+        phone: phoneInput,
+        room: document.getElementById('loginRoom').value.trim()
       };
 
-      document.getElementById('loginGateView').classList.add('hidden');
-      document.getElementById('appMainContent').classList.remove('hidden');
-      document.getElementById('bottomNav').classList.remove('hidden');
-      document.getElementById('userHeaderTag').innerText = activeUser.name.split(' ')[0];
-      document.getElementById('authActionBtn').innerText = "Logout";
+      generatedAuthOtp = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('displayTargetPhone').innerText = "+91 " + phoneInput;
+      document.getElementById('mobileStepForm').classList.add('hidden');
+      document.getElementById('otpVerifyForm').classList.remove('hidden');
 
-      renderCatalog();
+      // Instant live notification simulation
+      setTimeout(() => {
+        alert(`PassItOn OTP Code: [ ${generatedAuthOtp} ] for mobile +91 ${phoneInput}`);
+      }, 400);
+    }
+
+    function verifyLoginOtp(e) {
+      e.preventDefault();
+      const entered = document.getElementById('inputOtpVal').value.trim();
+      if (entered == generatedAuthOtp) {
+        activeUser = pendingUserData;
+        document.getElementById('loginGateView').classList.add('hidden');
+        document.getElementById('appMainContent').classList.remove('hidden');
+        document.getElementById('bottomNav').classList.remove('hidden');
+        document.getElementById('userHeaderTag').innerText = activeUser.name.split(' ')[0];
+        document.getElementById('authActionBtn').innerText = "Logout";
+        renderCatalog();
+      } else {
+        alert("Wrong OTP! Please check and enter the 4-digit code shown.");
+      }
     }
 
     function handleAuthClick() {
@@ -246,6 +307,8 @@
         document.getElementById('loginGateView').classList.remove('hidden');
         document.getElementById('appMainContent').classList.add('hidden');
         document.getElementById('bottomNav').classList.add('hidden');
+        document.getElementById('mobileStepForm').classList.remove('hidden');
+        document.getElementById('otpVerifyForm').classList.add('hidden');
         document.getElementById('userHeaderTag').innerText = "";
         document.getElementById('authActionBtn').innerText = "Log in";
       }
@@ -267,11 +330,50 @@
       if (tabId === 'orders') renderOrders();
     }
 
+    // 10 KM GEOLOCATION MODULE
+    function detectGpsLocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported. Defaulting to 10 km campus boundary.");
+        return;
+      }
+      document.getElementById('currentLocLabel').innerText = "Acquiring GPS...";
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          document.getElementById('currentLocLabel').innerText = "GPS Active (Radius <= 10 km)";
+          activeRadius = 10;
+          renderCatalog();
+        },
+        err => {
+          document.getElementById('currentLocLabel').innerText = "Campus Quad (10 km)";
+          activeRadius = 10;
+          renderCatalog();
+        }
+      );
+    }
+
+    function changeZoneFilter(val) {
+      if (val === 'far') {
+        activeRadius = 100; // broad view
+        document.getElementById('currentLocLabel').innerText = "All Locations (>10 km included)";
+      } else {
+        activeRadius = 10; // strict rule
+        document.getElementById('currentLocLabel').innerText = "10 km Radius Boundary";
+      }
+      renderCatalog();
+    }
+
     function renderCatalog() {
       const container = document.getElementById('browseListContainer');
       container.innerHTML = '';
 
-      itemsCatalog.forEach(item => {
+      const visibleItems = itemsCatalog.filter(i => i.distanceKm <= activeRadius);
+
+      if (visibleItems.length === 0) {
+        container.innerHTML = '<div class="col-span-2 text-center py-8 text-xs text-slate-500">No items found within 10 km radius.</div>';
+        return;
+      }
+
+      visibleItems.forEach(item => {
         const card = document.createElement('div');
         card.className = "bg-[#131d1b] border border-[#1f2e2b] rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between";
         card.innerHTML = `
@@ -285,7 +387,7 @@
             <div class="p-3 space-y-1">
               <h4 class="text-xs font-bold text-white line-clamp-2 leading-snug">${item.title}</h4>
               <div class="text-[10px] text-slate-400 flex items-center space-x-2">
-                <span>${item.distance}</span>
+                <span>${item.distanceKm} km away</span>
                 <span class="text-slate-300 font-semibold">${item.condition}</span>
               </div>
               <div class="text-[10px] text-slate-500">${item.seller}</div>
@@ -301,13 +403,51 @@
       });
     }
 
+    function processPhotoUpload(e, type) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          if (type === 'item') uploadedItemPhoto = ev.target.result;
+          if (type === 'qr') uploadedSellerQr = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleNewItemPost(e) {
+      e.preventDefault();
+      if (!uploadedItemPhoto || !uploadedSellerQr) {
+        alert("Both Item Photo and Seller PhonePe/GPay QR code image are mandatory!");
+        return;
+      }
+
+      itemsCatalog.unshift({
+        id: Date.now(),
+        title: document.getElementById('sellTitleInput').value,
+        price: Number(document.getElementById('sellPriceInput').value),
+        distanceKm: 0.3,
+        condition: document.getElementById('sellConditionInput').value,
+        seller: activeUser.name,
+        phone: activeUser.phone,
+        room: activeUser.room,
+        upi: document.getElementById('sellUpiInput').value,
+        photo: uploadedItemPhoto,
+        qr: uploadedSellerQr,
+        sold: false
+      });
+
+      alert("Item listed with personal QR code!");
+      switchTab('browse');
+    }
+
     function openPayDialog(itemId) {
       selectedItemId = itemId;
       const item = itemsCatalog.find(i => i.id === itemId);
       document.getElementById('payItemTitle').innerText = item.title;
       document.getElementById('payItemPrice').innerText = '₹' + item.price;
-      const upiUri = `upi://pay?pa=${encodeURIComponent(item.upi)}&pn=${encodeURIComponent(item.seller)}&am=${item.price}&cu=INR`;
-      document.getElementById('payQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(upiUri)}`;
+      document.getElementById('payUpiText').innerText = item.upi;
+      document.getElementById('payQrCode').src = item.qr;
       document.getElementById('payModal').classList.remove('hidden');
     }
 
@@ -324,6 +464,8 @@
           title: item.title,
           price: item.price,
           seller: item.seller,
+          phone: item.phone,
+          room: item.room,
           otp: code
         });
       }
@@ -336,45 +478,23 @@
       box.innerHTML = userOrders.length === 0 ? '<div class="text-center py-6 text-slate-500 text-xs">No purchased orders yet.</div>' : '';
       userOrders.forEach(o => {
         const d = document.createElement('div');
-        d.className = "bg-[#131d1b] border border-[#1f2e2b] p-3 rounded-2xl space-y-1.5 text-xs";
+        d.className = "bg-[#131d1b] border border-[#1f2e2b] p-3 rounded-2xl space-y-2 text-xs";
         d.innerHTML = `
           <div class="flex justify-between font-bold text-white">
             <span>${o.title}</span>
             <span class="text-[#34d399]">₹${o.price}</span>
           </div>
-          <div class="text-[11px] text-slate-400">Seller: ${o.seller}</div>
-          <div class="bg-[#1a4237] text-[#34d399] p-2 rounded-xl text-center font-bold tracking-wider">
-            Verification OTP: ${o.otp}
+          <div class="text-[11px] text-slate-400">
+            <div><b>Seller:</b> ${o.seller} (${o.phone})</div>
+            <div><b>Location:</b> ${o.room}</div>
           </div>
+          <div class="bg-[#1a4237] text-[#34d399] p-2 rounded-xl text-center font-bold tracking-wider">
+            Handover OTP: ${o.otp}
+          </div>
+          <p class="text-[10px] text-slate-500 text-center">Show this OTP to the senior upon physical item check.</p>
         `;
         box.appendChild(d);
       });
-    }
-
-    function processPhotoUpload(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = ev => uploadedPhotoData = ev.target.result;
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function handleNewItemPost(e) {
-      e.preventDefault();
-      itemsCatalog.unshift({
-        id: Date.now(),
-        title: document.getElementById('sellTitleInput').value,
-        price: Number(document.getElementById('sellPriceInput').value),
-        distance: "0.2 km away",
-        condition: document.getElementById('sellConditionInput').value,
-        seller: activeUser.name + ' (' + activeUser.room + ')',
-        upi: document.getElementById('sellUpiInput').value,
-        photo: uploadedPhotoData || "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=400&q=80",
-        sold: false
-      });
-      alert("Item listed on PassItOn!");
-      switchTab('browse');
     }
   </script>
 </body>
